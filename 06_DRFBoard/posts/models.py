@@ -8,7 +8,7 @@ from users.models import Profile
 class Post(models.Model):
     author = models.ForeignKey(User,
                                on_delete=models.CASCADE,
-                               related_name='author')
+                               related_name='posts')
     profile = models.ForeignKey(Profile,
                                 on_delete=models.CASCADE,
                                 blank=True,
@@ -20,7 +20,7 @@ class Post(models.Model):
     likes = models.ManyToManyField(User, related_name='like_posts')
     published_date = models.DateTimeField(default=timezone.now)
 
-    def like_count():
+    def like_count(self):
         return self.likes.count()
 
 

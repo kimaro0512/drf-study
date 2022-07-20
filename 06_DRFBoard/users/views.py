@@ -21,24 +21,25 @@ class LoginView(generics.GenericAPIView):
         return Response({"token": token.key}, status=status.HTTP_200_OK)
 
 
-class ProfileView(generics.GenericAPIView):
+class ProfileView(generics.RetrieveUpdateAPIView):
+    queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
 
-    def patch(self, request):
-        profile = Profile.objects.get(user=request.user)
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        data = serializer.validated_data
-        profile.nickname = data['nickname']
-        profile.position = data['position']
-        profile.subjects = data['subjects']
-        if request.data['image']:
-            profile.image = request.data['image']
-        profile.save()
-        return Response({"result": "ok"},
-                        status=status.HTTP_206_PARTIAL_CONTENT)
+    # def patch(self, request):
+    #     profile = Profile.objects.get(user=request.user)
+    #     serializer = self.get_serializer(data=request.data)
+    #     serializer.is_valid(raise_exception=True)
+    #     data = serializer.validated_data
+    #     profile.nickname = data['nickname']
+    #     profile.position = data['position']
+    #     profile.subjects = data['subjects']
+    #     if request.data['image']:
+    #         profile.image = request.data['image']
+    #     profile.save()
+    #     return Response({"result": "ok"},
+    #                     status=status.HTTP_206_PARTIAL_CONTENT)
 
-    def get(self, request):
-        profile = Profile.objects.get(user=request.user)
-        serializer = self.get_serializer(profile)
-        return Response(serializer.data)
+    # def get(self, request):
+    #     profile = Profile.objects.get(user=request.user)
+    #     serializer = self.get_serializer(profile)
+    #     return Response(serializer.data)
